@@ -1,0 +1,80 @@
+<div id="content">halo</div>
+
+<script>
+  // Object to manage the application
+  const pbo = {
+    model: {
+      mahasiswa: [
+        { username: 'hilda', pin: 'hilda2023' },
+        { username: 'maria', pin: 'maria2201' },
+        { username: 'anggun', pin: 'anggun3322' },
+      ],
+    },
+    services: {
+      getter: function () {
+        alert('getter');
+      },
+      setter: function () {
+        alert('setter');
+      },
+    },
+    view: {
+      // Renders the login form as HTML
+      signform: function () {
+        return `
+          <div>
+            <label>Username:</label>
+            <input type="text" id="username"><br/>
+            <label>PIN:</label>
+            <input type="password" id="pin"><br/>
+            <button id="login">Login</button>
+            <button id="cancel">Cancel</button>
+          </div>
+        `;
+      },
+    },
+    controller: {
+      // Handles login button functionality
+      signin: function () {
+        document.getElementById('login').onclick = function () {
+          const username = document.getElementById('username').value.trim();
+          const pin = document.getElementById('pin').value.trim();
+
+          // Check credentials in the model
+          const user = pbo.model.mahasiswa.find(
+            (m) => m.username === username && m.pin === pin
+          );
+
+          if (user) {
+            alert(`Welcome, ${user.username}!`);
+          } else {
+            alert('Invalid username or PIN');
+          }
+        };
+      },
+      // Clears the input fields
+      signout: function () {
+        document.getElementById('username').value = '';
+        document.getElementById('pin').value = '';
+      },
+      // Renders the login form and initializes event handlers
+      signform: function () {
+        document.getElementById('content').innerHTML = pbo.view.signform();
+
+        // Bind event handlers for buttons
+        this.signin();
+        this.cancel();
+      },
+      // Handles cancel button functionality
+      cancel: function () {
+        document.getElementById('cancel').onclick = function () {
+          document.getElementById('username').value = '';
+          document.getElementById('pin').value = '';
+        };
+      },
+    },
+  };
+
+  // Initialize the application
+  pbo.controller.signform();
+</script>
